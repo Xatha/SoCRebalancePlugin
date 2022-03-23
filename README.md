@@ -8,6 +8,7 @@ But.. not Captain hacking mains allowed..
 ## Changelog
 
 **1.0.0**
+
 First release of the mod. The more you fail, the better loot you can potentially get. The shrine now automatically turns off after getting a legendary. There's also a check that turns this mechanic off if the Shrine has been hacked Captain's hacking beacons. Sorry no Captain players allowed here! 
 
 * The base chances are the same, it only changes the more you fail;
