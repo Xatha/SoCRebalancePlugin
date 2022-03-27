@@ -19,11 +19,12 @@ namespace SoCRebalancePlugin
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Luca";
         public const string PluginName = "SoCRebalancePlugin";
-        public const string PluginVersion = "1.0";
+        public const string PluginVersion = "1.0.1";
 
         //Init values
         private PickupDropTable dropTable;
         private int concurrentFailurePurchaseCount = 0;
+        private float refreshTimer = 2f;
 
 
         //The Awake() method is run at the very start when the game is initialized.
@@ -33,15 +34,9 @@ namespace SoCRebalancePlugin
             Log.Init(Logger);
 
             On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehaviour_AddShrineStack;
-            On.RoR2.ShrineChanceBehavior.Start += ShrineChanceBehaviour_Start;
-
             Log.LogInfo(nameof(Awake) +" is Done. SoC has succesfully hooked into wanted functions.");
         }
 
-        private void ShrineChanceBehaviour_Start(On.RoR2.ShrineChanceBehavior.orig_Start orig, ShrineChanceBehavior self)
-        {
-            orig(self);
-        }
 
         private void ShrineChanceBehaviour_AddShrineStack(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, ShrineChanceBehavior self, Interactor activator)
         {
@@ -53,9 +48,9 @@ namespace SoCRebalancePlugin
             }
 
             //For testing purposes 
-            self.SetFieldValue<float>("refreshTimer", 0f);
+            //self.SetFieldValue<float>("refreshTimer", 0f);
             //self.SetFieldValue<float>("costMultiplierPerPurchase", 1f);
-            self.SetFieldValue<int>("maxPurchaseCount", 999);
+            //self.SetFieldValue<int>("maxPurchaseCount", 999);
 
             //Getting fields from object. 
             var rng = self.GetFieldValue<Xoroshiro128Plus>("rng");
@@ -115,7 +110,6 @@ namespace SoCRebalancePlugin
                             self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
                         }
 
-                        Debug.Log("Case 0");
                         break;
 
                     case 1:
@@ -138,7 +132,6 @@ namespace SoCRebalancePlugin
                             self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
                         }
 
-                        Debug.Log("Case 1");
                         break;
 
                     case 2:
@@ -161,7 +154,6 @@ namespace SoCRebalancePlugin
                             self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
                         }
 
-                        Debug.Log("Case 2");
                         break;
 
                     case 3:
@@ -184,7 +176,6 @@ namespace SoCRebalancePlugin
                             self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
                         }
 
-                        Debug.Log("Case 3");
                         break;
 
                     case 4:
@@ -207,7 +198,6 @@ namespace SoCRebalancePlugin
                             self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
                         }
 
-                        Debug.Log("Case 4");
                         break;
 
                     case 5:
@@ -230,7 +220,6 @@ namespace SoCRebalancePlugin
                             self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
                         }
 
-                         //Debug.Log("Case 5");
                         break;
 
 
@@ -243,7 +232,6 @@ namespace SoCRebalancePlugin
                         //If legendary is dropped, deactivate shrine.
                         self.SetFieldValue<int>("successfulPurchaseCount", self.maxPurchaseCount);
 
-                        Debug.Log("Case 6");
                         break;
                 }
             } 
@@ -261,7 +249,6 @@ namespace SoCRebalancePlugin
                 weightedSelection.AddChoice(tier3Value, tier3Weight);
                 weightedSelection.AddChoice(equipmentValue, equipmentWeight);
                 pickupIndex = weightedSelection.Evaluate(rng.nextNormalizedFloat);
-                Debug.Log("Case Captain");
             }
 
 
@@ -275,10 +262,6 @@ namespace SoCRebalancePlugin
 
                 var purchasseInteraction = self.GetFieldValue<PurchaseInteraction>("purchaseInteraction");
                 var x = purchasseInteraction.Networkcost;
-
-                Debug.Log("sucessfulPurchaseCount is " + self.GetFieldValue<int>("successfulPurchaseCount"));
-                Debug.Log("failurePurchaseCount is " + this.concurrentFailurePurchaseCount);
-                Debug.Log("Cost is " + x);
             }
             else
             {
@@ -291,14 +274,8 @@ namespace SoCRebalancePlugin
 
                 PickupDropletController.CreatePickupDroplet(pickupIndex, dropletOrigin.position, dropletOrigin.forward * 20f);
 
-
-
-
                 var purchasseInteraction = self.GetFieldValue<PurchaseInteraction>("purchaseInteraction");
                 var x = purchasseInteraction.Networkcost;
-                Debug.Log("sucessfulPurchaseCount is " + self.GetFieldValue<int>("successfulPurchaseCount"));
-                Debug.Log("failurePurchaseCount is " + this.concurrentFailurePurchaseCount);
-                Debug.Log("Cost is " + x);
             }
 
             Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
@@ -316,6 +293,7 @@ namespace SoCRebalancePlugin
 
             //Analogue to the source code.
             self.SetFieldValue<bool>("waitingForRefresh", true);
+            self.SetFieldValue<float>("refreshTimer", this.refreshTimer);
 
             if (self.GetFieldValue<int>("successfulPurchaseCount") >= self.maxPurchaseCount)
             {
