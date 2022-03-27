@@ -3,7 +3,7 @@
 This mod aims to rebalance how the Shrine of Chance works in Risk of Rain 2. 
 In the early - mid game the Shrine of Chance is frankly the worst economic choice. You spend as much money as chest prices on the shrine, with the same drop chances as a normal chest... with the little caveat that you can also get *nothing at all*. I felt this was an unrewarding system, and sought to make my own spin on it. This mods rewards you and your crippling gambling addictions, by upping the chance of getting rarer items the *more times you fail in a row*. Now, failing four times in a row isn't a waste of time and money, but it can now *potentially* give you that sweet legendary you need to win your run!.. 
 
-But.. not Captain hacking mains allowed.. 
+But.. not Captain hacking beacons allowed.. 
 
 ## Changelog
 
