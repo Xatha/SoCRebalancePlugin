@@ -19,7 +19,7 @@ namespace SoCRebalancePlugin
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Luca";
         public const string PluginName = "SoCRebalancePlugin";
-        public const string PluginVersion = "1.0.1";
+        public const string PluginVersion = "1.0.2";
 
         //Init values
         private PickupDropTable dropTable;
@@ -34,7 +34,7 @@ namespace SoCRebalancePlugin
             Log.Init(Logger);
 
             On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehaviour_AddShrineStack;
-            Log.LogInfo(nameof(Awake) +" is Done. SoC has succesfully hooked into wanted functions.");
+            Log.LogInfo(nameof(Awake) + " is Done. SoC has succesfully hooked into wanted functions.");
         }
 
 
@@ -294,6 +294,15 @@ namespace SoCRebalancePlugin
             //Analogue to the source code.
             self.SetFieldValue<bool>("waitingForRefresh", true);
             self.SetFieldValue<float>("refreshTimer", this.refreshTimer);
+
+
+            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ShrineUseEffect"), new EffectData
+            {
+                origin = self.transform.localPosition,
+                rotation = Quaternion.identity,
+                scale = 1f,
+                color = self.GetFieldValue<Color>("shrineColor")
+            }, true);
 
             if (self.GetFieldValue<int>("successfulPurchaseCount") >= self.maxPurchaseCount)
             {
