@@ -7,6 +7,23 @@ But.. not Captain hacking beacons allowed..
 
 ## Changelog
 
+**1.1.0**
+* Configs introduced:
+    * MaximumPurchaseCount can now be configured.
+        * `refreshTimer` can now be configured.
+        * `costMultiplier` can now be configured.
+        * `deactivateIfRedItemDrops` and `isBeaconHackingAllowed` can now be disabled.
+        * Configs can be hot-reloaded with the console command: `SoC_reload_config`. This also works in multiplayer games. 
+* Changed how the interaction effects work
+    * The colour of the effect on interaction is now depending on the item rarity dropped.
+* Cleaned up a lot of code.
+    
+**1.0.2**
+Fixed missing effect and sound when interacting with the shrine. 
+
+**1.0.1**
+Fixed some leftover code used for debugging.
+
 **1.0.0**
 
 First release of the mod. The more you fail, the better loot you can potentially get. The shrine now automatically turns off after getting a legendary. There's also a check that turns this mechanic off if the Shrine has been hacked Captain's hacking beacons. Sorry no Captain players allowed here! 
